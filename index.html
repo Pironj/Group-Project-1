@@ -80,7 +80,7 @@
         <input class="form-control" type="text" placeholder="Search" aria-label="Search">
       </form>
     </div> -->
-    <!-- Collapsible content -->
+      <!-- Collapsible content -->
 
   </nav>
 
@@ -89,19 +89,19 @@
     <div id="bg-img"></div>
     <!--search bar-->
     <div class="centered">
-        <form class="navbar-form" role="search">
-          <div class="input-group add-on">
-            <input class="form-control" placeholder="Name" name="srch-term" id="srch-term1" type="text">
-            <input class="form-control" placeholder="Place" name="srch-term" id="srch-term2" type="text">
-            <div class="input-group-btn">
-              <button class="btn btn-danger" type="submit">Submit</button>
-            </div>
+      <form class="navbar-form" role="search">
+        <div class="input-group add-on">
+          <input class="form-control" placeholder="Name" name="srch-term" id="srch-term1" type="text">
+          <input class="form-control" placeholder="Place" name="srch-term" id="srch-term2" type="text">
+          <div class="input-group-btn">
+            <button class="btn btn-danger" type="submit">Submit</button>
           </div>
-        </form>
-        
+        </div>
+      </form>
+
     </div>
   </div>
-  
+
 
   <!--Search Results-->
   <div id="results">
@@ -117,24 +117,18 @@
               <!--Content-->
               <div class="card-body">
                 <!-- Table -->
-                <table class="table">
+                <table class="table" id="table-info">
                   <thead>
                     <tr>
-                        <th scope=“col”>Event</th>
-                        <th scope=“col”>Description</th>
-                        <th scope=“col”>Price</th>
-                        <th scope=“col”>Sample</th>
+                      <th scope=“col”>Event</th>
+                      <th scope=“col”>Venue</th>
+                      <th scope=“col”>Date</th>
+                      <th scope=“col”>Doors</th>
+                      <th scope=“col”>Purchase</th>
                     </tr>
                   </thead>
-                  <tbody id="table-info">
-                    <!-- Below Insert data the user inputs into firebase -->
-                    <!--<tr>-->
-                    <!--<td>  </td>-->
-                    <!--<td>  </td>-->
-                    <!--<td>  </td>-->
-                    <!--<td>  </td>-->
-                    <!--<td>  </td>-->
-                    <!--</tr>-->
+                  <tbody>
+                    <!-- Below Insert data the user inputs into firebase -->              
                   </tbody>
                 </table>
 
@@ -159,10 +153,11 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
-  <script src=""https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js""</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>
