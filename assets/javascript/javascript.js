@@ -83,6 +83,7 @@ $(document).ready(function () {
           
           database.ref().push({
               resultArtist: resultArtist,
+              resultTrackName: resultTrackName,
               locationInput: locationInput,
               info: info,
               price: price,
@@ -110,24 +111,36 @@ $(document).ready(function () {
   });
 
 // appending row data.
-database.ref().on("child_added", function (childSnapshot) {
-  // creating audio player widget using firebase
-  var samplePlayer = $('<audio controls></audio>');
-  samplePlayer.attr('src', childSnapshot.val().sample);
-  var newRow = $('<tr>').append(
-    $('<td>').text(artistInput),
-    $('<td>').text(locationInput),
-    $('<td>').text(childSnapshot.val().info),
-    $('<td>').text(childSnapshot.val().price),
-    $('<td>').append(samplePlayer),
-    );
-    if (artistInput = '') {
-      return;
-    } else {
-      $("#table-info").append(newRow);
+  database.ref().on("child_added", function (childSnapshot) {
+
+
+
+
+
+
+    if (artistInput !== "") {
+
+    
+    
+      // creating audio player widget using firebase
+      var audioFig = $('<figure>');
+      var caption = $('<figcaption>');
+      caption.text(childSnapshot.val().resultArtist + ": " + childSnapshot.val().resultTrackName);
+      audioFig.append(caption);
+      var samplePlayer = $('<audio controls></audio>');
+      samplePlayer.attr('src', childSnapshot.val().sample);
+      audioFig.append(samplePlayer);
+      var newRow = $('<tr>').append(
+        $('<td>').text(artistInput),
+        $('<td>').text(locationInput),
+        $('<td>').text(childSnapshot.val().info),
+        $('<td>').text(childSnapshot.val().price),
+        $('<td>').append(audioFig),
+        );
+        $("#table-info").append(newRow);
+      
     }
-  
-  });  
+    });  
 
     
     
