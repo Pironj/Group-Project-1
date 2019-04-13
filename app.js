@@ -128,6 +128,13 @@ var buyTicket = '';
 var audioFig = $('<figure>');
 var artistSearch = '';
 var citySearch = '';
+var address = '';
+var zip = '';
+var mapSearch = '';
+var convertDate = '';
+var newDate = '';
+var convertTime = '';
+var newTime = '';
 
 // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
 
@@ -155,6 +162,17 @@ $("#submitBtn").on("click", function (event) {
       date = response._embedded.events[i].dates.start.localDate;
       venue = response._embedded.events[i]._embedded.venues[0].name;
       buyTicket = response._embedded.events[i].url;
+      address = response._embedded.events[i]._embedded.venues[0].address.line1;
+      zip = response._embedded.events[i]._embedded.venues[0].postalCode;
+      mapSearch = address + " " + zip;
+         // Converts API date results to a more user-readable format
+      convertDate = moment(date);
+      newDate = convertDate.format('ll');
+
+    // Converts API time results to a more user-readable format
+      convertTime = moment(time, 'HH:mm:ss');
+      newTime = convertTime.format('LT');
+
     }
     iTunesCall(artistSearch);
 
