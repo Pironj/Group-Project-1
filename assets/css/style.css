@@ -8,6 +8,45 @@ body{
     font-family: helvetica neue,helvetica,arial,sans-serif;
 }
 
+h4, p{
+    text-align: center;
+}
+
+#signInBtn, #registerBtn{
+    margin-top: 30px;
+
+}
+.col-lg-4{
+    text-align: center;
+}
+.fa-map-marker-alt{
+    color:#dc3545;
+}
+
+.fa-ticket-alt, .fa-guitar, .fa-calendar-alt{
+    color:#dc3545;
+    letter-spacing: 2px;
+    padding: 25px;
+    border-radius: 20px;
+    font-size: 3.45rem;
+    
+}
+.fa-music{
+    letter-spacing: 2px;
+    padding: 25px;
+    border-radius: 20px;
+    color: #FFF;
+    font-size: 1.25rem;
+}
+
+h1{
+    font-size: 60px;
+    line-height: 1em;
+    margin-bottom: 20px;
+    font-weight: 200;
+    text-align: center;
+}
+
 #navbar a:hover
 {
     color: #FFF;
