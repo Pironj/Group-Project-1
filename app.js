@@ -1,3 +1,48 @@
+
+$(document).ready(function () {
+
+  // Variable to store # of site visits in total
+  var conCount = 0;
+
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAWzfwScYLalCRmNEnnX5--T1r3wikyBB4",
+    authDomain: "eventhunter-46970.firebaseapp.com",
+    databaseURL: "https://eventhunter-46970.firebaseio.com",
+    projectId: "eventhunter-46970",
+    storageBucket: "eventhunter-46970.appspot.com",
+    messagingSenderId: "385498394865"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database();
+
+  // All of our connections will be stored in this directory.
+  var connectionsRef = database.ref("/connections");
+  var connectedRef = database.ref(".info/connected"); //.info/connected is a special firebase selector taht tells the client if a user is connected.
+
+  // When the client's connection state changes...
+  connectedRef.on("value", function (snap) { // .on event listener for whenever a value changes "value" we run this function. (snap) or (snapshot) can name whatever you want is literally just the data
+
+    // If they are connected..
+    if (snap.val()) { // snap is an object and has methods on it .val().  if true; snap.val() similar to ajax response.
+      var con = connectionsRef.push(true);
+      // increment site visit per connection
+      conCount++;
+      con.onDisconnect().remove();
+    }
+  });
+  connectionsRef.on("value", function (snap) {
+    $(".card-footer").text("Site Visits: " + conCount + ' ' + "# Watching: " + snap.numChildren());
+  });
+
+});
+
+
+console.clear();
+
+
 //bg img JQuery
 class Slideshow {
 
@@ -62,7 +107,7 @@ class Slideshow {
 
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   new Slideshow;
 });
 
@@ -71,55 +116,101 @@ $(document).ready(function() {
 
 
 var key = "jDG8c4z6my6XH8jVVebKu6i6eNqK1fY7";
-var artist = "punk";
-var genre = "";
-var size = 10;
-var zip = "";
-var city = "";
+var resultArtist = "";
+var sample = "";
+var resultTrackName = "";
+var size = 5;
+var artist = '';
+var time = '';
+var date = '';
+var venue = '';
+var buyTicket = '';
+var audioFig = $('<figure>');
+var artistSearch = '';
+var citySearch = '';
 
-var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
-
-
-  
-
-$.ajax({
-  url: queryURL,
-  method: "GET"
-}).then(function (response) {
-  console.log(response);
-
-  for (var i = 0; i < response._embedded.events.length; i++) {
-    console.log(response._embedded.events.length);
-    console.log(response._embedded.events[i].name);
-    console.log(response._embedded.events[i].dates.start.localTime);
-    console.log(response._embedded.events[i].dates.start.localDate);
-    console.log(response._embedded.events[i]._embedded.venues[0].name);
-    console.log(response._embedded.events[i].url);
-
-    var artist = response._embedded.events[i].name;
-    var time = response._embedded.events[i].dates.start.localTime;
-    var date = response._embedded.events[i].dates.start.localDate;
-    var venue = response._embedded.events[i]._embedded.venues[0].name;
-    var address = response._embedded.events[i]._embedded.venues[0].address.line1;
-    city = response._embedded.events[i]._embedded.venues[0].city.name;
-    var state = response._embedded.events[i]._embedded.venues[0].state.stateCode;
-    zip = response._embedded.events[i]._embedded.venues[0].postalCode;
-    var buyTicket = response._embedded.events[i].url;
-
-    var location = $('<div>');
-    location.append(address);
-    var locCityState = $('<div>');
-    locCityState.append(city + ', ' + state);
-    location.append(locCityState);
-    var locZip = $('<div>');
-    locZip.append(zip);
-    location.append(locZip);
-    var directions = $('<a>Directions</a>');
-    directions.attr('href', "https://www.google.com/maps/place/" + address);
-    location.append(directions);
+// var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
 
 
-    var newRow = $('<tr>').append(
+$("#submitBtn").on("click", function (event) {
+  event.preventDefault()
+
+  artistSearch = $("#srch-term1").val();
+  citySearch = $("#srch-term2").val();
+  // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
+  var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
+  // var queryURL1 = "https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
+
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function (response) {
+    // console.log(response);
+
+
+    for (var i = 0; i < response._embedded.events.length; i++) {
+
+      artist = response._embedded.events[i].name;
+      time = response._embedded.events[i].dates.start.localTime;
+      date = response._embedded.events[i].dates.start.localDate;
+      venue = response._embedded.events[i]._embedded.venues[0].name;
+      buyTicket = response._embedded.events[i].url;
+    }
+    iTunesCall(artistSearch);
+
+  });
+
+
+
+  function iTunesCall(term) {
+
+    $.ajax({
+      url: 'https://itunes.apple.com/search',
+      crossDomain: true,
+      dataType: 'jsonp',
+      data: {
+        term: term,
+        media: 'track',
+        entity: 'song',
+        limit: 1,
+        explicit: 'No'
+      },
+      method: 'GET',
+      success: function (data) {
+        console.log("second ajax call");
+        console.log(data);
+
+
+        $.each(data.results, function (i, result) {
+          if (i > 0) { return false; }
+          sample = result.previewUrl;
+          resultArtist = result.artistName;
+          resultTrackName = result.trackName;
+          console.log(result);
+          console.log(resultArtist);
+
+        });
+
+        displayResults();
+
+      },
+      error: function (e) {
+        console.log(e);
+      }
+    });
+
+  }
+
+})
+
+
+function displayResults() {
+  if (artistSearch !== "") {
+
+    $(".tableRow").empty();
+    audioFig.empty();
+    var newRow = $('<tr>').addClass('tableRow');
+    newRow.append(
       $('<td>').text(artist),
       $('<td>').append(location),
       $('<td>').text(venue),
@@ -129,10 +220,25 @@ $.ajax({
       // $('<td>').html('<button><a target="_blank" href=' + buyTicket + '>Tickets</a></button>'),
     );
 
-    $('#table-info > tbody').append(newRow)
+    $('#table-info').append(newRow);
 
+
+
+
+    // creating audio player widget using firebase
+    // var audioFig = $('<figure>');
+    var caption = $('<figcaption>');
+
+    caption.text(resultArtist + ": " + resultTrackName);
+    console.log(caption);
+    audioFig.append(caption);
+    var samplePlayer = $('<audio controls></audio>');
+    samplePlayer.attr('src', sample);
+    audioFig.append(samplePlayer);
+    var newRowAudio = $('<tr>').append(audioFig);
+    $("#table-info").append(newRowAudio);
 
   }
-  console.log(response);
+}
 
-});
+
