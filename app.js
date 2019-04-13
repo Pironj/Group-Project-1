@@ -128,6 +128,13 @@ var buyTicket = '';
 var audioFig = $('<figure>');
 var artistSearch = '';
 var citySearch = '';
+var address = '';
+var zip = '';
+var mapSearch = '';
+var convertDate = '';
+var newDate = '';
+var convertTime = '';
+var newTime = '';
 
 // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
 
@@ -155,6 +162,17 @@ $("#submitBtn").on("click", function (event) {
       date = response._embedded.events[i].dates.start.localDate;
       venue = response._embedded.events[i]._embedded.venues[0].name;
       buyTicket = response._embedded.events[i].url;
+      address = response._embedded.events[i]._embedded.venues[0].address.line1;
+      zip = response._embedded.events[i]._embedded.venues[0].postalCode;
+      mapSearch = address + " " + zip;
+         // Converts API date results to a more user-readable format
+      convertDate = moment(date);
+      newDate = convertDate.format('ll');
+
+    // Converts API time results to a more user-readable format
+      convertTime = moment(time, 'HH:mm:ss');
+      newTime = convertTime.format('LT');
+
     }
     iTunesCall(artistSearch);
 
@@ -212,12 +230,17 @@ function displayResults() {
     var newRow = $('<tr>').addClass('tableRow');
     newRow.append(
       $('<td>').text(artist),
+<<<<<<< HEAD
       $('<td>').append(location),
       $('<td>').text(venue),
       $('<td>').text(date),
       $('<td>').text(time),
+=======
+      $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue),
+      $('<td>').text(newDate),
+      $('<td>').text(newTime),
+>>>>>>> master
       $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
-      // $('<td>').html('<button><a target="_blank" href=' + buyTicket + '>Tickets</a></button>'),
     );
 
     $('#table-info').append(newRow);
