@@ -1,5 +1,5 @@
 var key = "jDG8c4z6my6XH8jVVebKu6i6eNqK1fY7";
-var artist = "black";
+var artist = "punk";
 var genre = "";
 var size = 10;
 var zip = "";
