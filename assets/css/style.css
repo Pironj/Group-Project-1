@@ -12,9 +12,14 @@ h4, p{
     text-align: center;
 }
 
-#signInBtn, #registerBtn{
+#signInBtn{
     margin-top: 30px;
+    float: left;
 
+}
+#registerBtn{
+    margin-top: 30px;
+    float: end;
 }
 .col-lg-4{
     text-align: center;
