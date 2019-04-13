@@ -230,16 +230,9 @@ function displayResults() {
     var newRow = $('<tr>').addClass('tableRow');
     newRow.append(
       $('<td>').text(artist),
-<<<<<<< HEAD
-      $('<td>').append(location),
-      $('<td>').text(venue),
-      $('<td>').text(date),
-      $('<td>').text(time),
-=======
       $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue),
       $('<td>').text(newDate),
       $('<td>').text(newTime),
->>>>>>> master
       $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
     );
 
