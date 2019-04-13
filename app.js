@@ -62,7 +62,7 @@ class Slideshow {
 
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   new Slideshow;
 });
 
@@ -80,7 +80,7 @@ var city = "seattle";
 var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
 
 
-  
+
 
 $.ajax({
   url: queryURL,
@@ -89,12 +89,12 @@ $.ajax({
   // console.log(response);
 
   for (var i = 0; i < response._embedded.events.length; i++) {
-    console.log(response._embedded.events.length);
-    console.log(response._embedded.events[i].name);
-    console.log(response._embedded.events[i].dates.start.localTime);
-    console.log(response._embedded.events[i].dates.start.localDate);
-    console.log(response._embedded.events[i]._embedded.venues[0].name);
-    console.log(response._embedded.events[i].url);
+    // console.log(response._embedded.events.length);
+    // console.log(response._embedded.events[i].name);
+    // console.log(response._embedded.events[i].dates.start.localTime);
+    // console.log(response._embedded.events[i].dates.start.localDate);
+    // console.log(response._embedded.events[i]._embedded.venues[0].name);
+    // console.log(response._embedded.events[i].url);
 
     var artist = response._embedded.events[i].name;
     var time = response._embedded.events[i].dates.start.localTime;
@@ -102,13 +102,30 @@ $.ajax({
     var venue = response._embedded.events[i]._embedded.venues[0].name;
     var buyTicket = response._embedded.events[i].url;
 
+    // Varibles for map link
+    var address = response._embedded.events[i]._embedded.venues[0].address.line1;
+    var zip = response._embedded.events[i]._embedded.venues[0].postalCode;
+    var mapSearch = address + " " + zip;
+
+    // var city = response._embedded.events[i]._embedded.venues[0].city.name;
+    // var state = response._embedded.events[i]._embedded.venues[0].state.stateCode;
+
+    console.log(mapSearch);
+
+    // Converts API date results to a more user-readable format
+    var convertDate = moment(date);
+    var newDate = convertDate.format('ll');
+
+    // Converts API time results to a more user-readable format
+    var convertTime = moment(time, 'HH:mm:ss');
+    var newTime = convertTime.format('LT');
+
     var newRow = $('<tr>').append(
       $('<td>').text(artist),
-      $('<td>').text(venue),
-      $('<td>').text(date),
-      $('<td>').text(time),
+      $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue),
+      $('<td>').text(newDate),
+      $('<td>').text(newTime),
       $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
-      // $('<td>').html('<button><a target="_blank" href=' + buyTicket + '>Tickets</a></button>'),
     );
 
     $('#table-info > tbody').append(newRow)
