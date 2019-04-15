@@ -152,35 +152,41 @@ $("#submitBtn").on("click", function (event) {
     url: queryURL,
     method: "GET"
   }).then(function (response) {
+    console.log("first api call");
     // console.log(response);
 
+    try {
+      for (var i =0; i < response._embedded.events.length; i++) {
 
-    for (var i = 0; i < response._embedded.events.length; i++) {
-
-      artist = response._embedded.events[i].name;
-      time = response._embedded.events[i].dates.start.localTime;
-      date = response._embedded.events[i].dates.start.localDate;
-      venue = response._embedded.events[i]._embedded.venues[0].name;
-      buyTicket = response._embedded.events[i].url;
-      address = response._embedded.events[i]._embedded.venues[0].address.line1;
-      zip = response._embedded.events[i]._embedded.venues[0].postalCode;
-      mapSearch = address + " " + zip;
-         // Converts API date results to a more user-readable format
-      convertDate = moment(date);
-      newDate = convertDate.format('ll');
-
-    // Converts API time results to a more user-readable format
-      convertTime = moment(time, 'HH:mm:ss');
-      newTime = convertTime.format('LT');
+        artist = response._embedded.events[i].name;
+        time = response._embedded.events[i].dates.start.localTime;
+        date = response._embedded.events[i].dates.start.localDate;
+        venue = response._embedded.events[i]._embedded.venues[0].name;
+        buyTicket = response._embedded.events[i].url;
+        address = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zip = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch = address + " " + zip;
+           // Converts API date results to a more user-readable format
+        convertDate = moment(date);
+        newDate = convertDate.format('ll');
+  
+      // Converts API time results to a more user-readable format
+        convertTime = moment(time, 'HH:mm:ss');
+        newTime = convertTime.format('LT');
+      }
+      iTunesCall(artistSearch);
 
     }
-    iTunesCall(artistSearch);
-
+    catch {
+      console.log("No response");
+      displayError();
+    }
   });
 
 
 
   function iTunesCall(term) {
+    console.log("about to send second api call");
 
     $.ajax({
       url: 'https://itunes.apple.com/search',
@@ -208,7 +214,7 @@ $("#submitBtn").on("click", function (event) {
           console.log(resultArtist);
 
         });
-
+        console.log("before display");
         displayResults();
 
       },
@@ -221,11 +227,34 @@ $("#submitBtn").on("click", function (event) {
 
 })
 
+function displayError() {
+  if (artistSearch !== "") {
+    console.log("about to delete rows");
+    $(".audioRow").empty();
+    $(".tableRow").empty();
+    var newRow = $('<tr>').addClass('tableRow');
+    $('#table-info').append(newRow);
+    var newErrorResult = $('<tr>').text("No Results Found");
+    newRow.append(newErrorResult);
+  }
+}
 
 function displayResults() {
   if (artistSearch !== "") {
 
     $(".tableRow").empty();
+    console.log("Neha test 1");
+    $("#table-info").empty();
+    console.log("Neha test 2");
+    var newTableHeader = $('<tr>');
+    newTableHeader.append(
+      $('<th>').attr('scope', 'col').text('Event'),
+      $('<th>').attr('scope', 'col').text('Venue'),
+      $('<th>').attr('scope', 'col').text('Date'),
+      $('<th>').attr('scope', 'col').text('Doors'),
+      $('<th>').attr('scope', 'col').text('Purhcase'),
+    )
+    $('#table-info').append(newTableHeader);
     audioFig.empty();
     var newRow = $('<tr>').addClass('tableRow');
     newRow.append(
@@ -238,9 +267,6 @@ function displayResults() {
 
     $('#table-info').append(newRow);
 
-
-
-
     // creating audio player widget using firebase
     // var audioFig = $('<figure>');
     var caption = $('<figcaption>');
@@ -251,7 +277,8 @@ function displayResults() {
     var samplePlayer = $('<audio controls></audio>');
     samplePlayer.attr('src', sample);
     audioFig.append(samplePlayer);
-    var newRowAudio = $('<tr>').append(audioFig);
+    var newRowAudio = $('<tr>').addClass("audioRow");
+    newRowAudio.append(audioFig);
     $("#table-info").append(newRowAudio);
 
   }
