@@ -3,11 +3,13 @@ head
     font-family: 'Raleway', sans-serif;
 }
 
-body{
+body {
     background: #413F49;
     font-family: helvetica neue,helvetica,arial,sans-serif;
 }
-
+.page-footer{
+color: #FFF;
+}
 h4, p{
     text-align: center;
 }
@@ -42,7 +44,7 @@ h4, p{
     font-size: 3.45rem;
     
 }
-.fa-music{
+.fa-music, .fa-twitter-square, .fa-instagram, .fa-facebook-square{
     letter-spacing: 2px;
     padding: 25px;
     border-radius: 20px;
@@ -131,17 +133,33 @@ h3
     color: #FFF;
    font-size: 72px;
     position: absolute;
-    top: 60%;
+    top: 65%;
     left: 46%;
     transform: translate(-50%, -50%);
     align-content: center;
 }
-
+#footer-left{
+    text-align: center;
+}
+#footer-right{
+    text-align: center;
+}
 #search{
     align-self: center;
 }
+<<<<<<< HEAD
 
 /* .form-control { width:40% !important; } */
+=======
+#footerData{
+position:absolute;
+float:right;
+}
+.footer-copyright{
+    top:10%;
+}
+.form-control { width:40% !important; }
+>>>>>>> 7873f739f2fee2c38b141a6a2b314a5e71cbbcc4
 #srch-term1 { margin-right:5px }
 /* .btn { margin-left:0px !important; 
 align-self: center;

@@ -33,9 +33,9 @@ $(document).ready(function () {
       con.onDisconnect().remove();
     }
   });
-  connectionsRef.on("value", function (snap) {
-    $(".card-footer").text("Site Visits: " + conCount + ' ' + "# Watching: " + snap.numChildren());
-  });
+  // connectionsRef.on("value", function (snap) {
+  //   $(".card-footer").text("Site Visits: " + conCount + ' ' + "# Watching: " + snap.numChildren());
+  // });
 
 });
 
@@ -116,25 +116,47 @@ $(document).ready(function () {
 
 
 var key = "jDG8c4z6my6XH8jVVebKu6i6eNqK1fY7";
-var resultArtist = "";
-var sample = "";
-var resultTrackName = "";
+// var resultArtist = "";
+// var sample = "";
+// var resultTrackName = "";
+var resultArtist = [];
+var sample = [];
+var resultTrackName = [];
 var size = 5;
-var artist = '';
-var time = '';
-var date = '';
-var venue = '';
-var buyTicket = '';
+// var artist = '';
+// var time = '';
+// var date = '';
+// var venue = '';
+// var buyTicket = '';
 var audioFig = $('<figure>');
 var artistSearch = '';
 var citySearch = '';
-var address = '';
-var zip = '';
-var mapSearch = '';
-var convertDate = '';
-var newDate = '';
-var convertTime = '';
-var newTime = '';
+// var address = '';
+// var zip = '';
+// var mapSearch = '';
+// var convertDate = '';
+// var newDate = '';
+// var convertTime = '';
+// var newTime = '';
+var masterResponse;
+
+var artist = [];
+var time = [];
+var date = [];
+var venue = [];
+var buyTicket = [];
+var audioFig = $('<figure>');
+var artistSearch = [];
+var citySearch = [];
+var address = [];
+var zip = [];
+var mapSearch = [];
+var convertDate = [];
+var newDate = [];
+var convertTime = [];
+var newTime = [];
+var resultsLength;
+// artistAudioSearch = response._embedded.events[i]._embedded.attractions[0].name
 
 // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
 
@@ -144,14 +166,13 @@ $("#submitBtn").on("click", function (event) {
 
   artistSearch = $("#srch-term1").val();
   citySearch = $("#srch-term2").val();
-  // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
   var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
-  // var queryURL1 = "https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
 
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function (response) {
+<<<<<<< HEAD
     // console.log(response);
 
 
@@ -168,14 +189,41 @@ $("#submitBtn").on("click", function (event) {
          // Converts API date results to a more user-readable format
       convertDate = moment(date);
       newDate = convertDate.format('ll');
+=======
+    console.log(response);
+    // TODO: Get an audio sample for an artist for each event
+    // console.log(response._embedded.events[0]._embedded.attractions[0].name);
+    masterResponse = response;
+    resultsLength = response._embedded.events.length;
 
-    // Converts API time results to a more user-readable format
-      convertTime = moment(time, 'HH:mm:ss');
-      newTime = convertTime.format('LT');
+    try {
+      for (var i =0; i < resultsLength; i++) {
+
+        artist[i] = response._embedded.events[i].name;
+        time[i] = response._embedded.events[i].dates.start.localTime;
+        date[i] = response._embedded.events[i].dates.start.localDate;
+        venue[i] = response._embedded.events[i]._embedded.venues[0].name;
+        buyTicket[i] = response._embedded.events[i].url;
+        address[i] = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zip[i] = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch[i] = address + " " + zip;
+
+        //Converts API date results to a more user-readable format
+        convertDate[i] = moment(date[i]);
+        newDate[i] = convertDate[i].format('ll');
+  
+        // Converts API time results to a more user-readable format
+        convertTime[i] = moment(time, 'HH:mm:ss');
+        newTime[i] = convertTime[i].format('LT');
+      }
+>>>>>>> 7873f739f2fee2c38b141a6a2b314a5e71cbbcc4
+
+      iTunesCall(artistSearch);
 
     }
-    iTunesCall(artistSearch);
-
+    catch {
+      displayError();
+    }
   });
 
 
@@ -190,23 +238,17 @@ $("#submitBtn").on("click", function (event) {
         term: term,
         media: 'track',
         entity: 'song',
-        limit: 3,
+        limit: resultsLength,
         explicit: 'No'
       },
       method: 'GET',
       success: function (data) {
-        console.log("second ajax call");
-        console.log(data);
-
 
         $.each(data.results, function (i, result) {
-          if (i > 2) { return false; }
-          sample = result.previewUrl;
-          resultArtist = result.artistName;
-          resultTrackName = result.trackName;
-          console.log(result);
-          console.log(resultArtist);
-
+          if (i > resultsLength) { return false; }
+          sample[i] = result.previewUrl;
+          resultArtist[i] = result.artistName;
+          resultTrackName[i] = result.trackName;
         });
 
         displayResults();
@@ -221,39 +263,56 @@ $("#submitBtn").on("click", function (event) {
 
 })
 
+function displayError() {
+  if (artistSearch !== "") {
+    $(".audioRow").empty();
+    $(".tableRow").empty();
+    var newRow = $('<tr>').addClass('tableRow');
+    $('#table-info').append(newRow);
+    var newErrorResult = $('<tr>').text("No Results Found");
+    newRow.append(newErrorResult);
+  }
+}
 
 function displayResults() {
   if (artistSearch !== "") {
-
     $(".tableRow").empty();
+    $("#table-info").empty();
+    var newTableHeader = $('<tr>');
+    newTableHeader.append(
+      $('<th>').attr('scope', 'col').text('Event'),
+      $('<th>').attr('scope', 'col').text('Venue'),
+      $('<th>').attr('scope', 'col').text('Date'),
+      $('<th>').attr('scope', 'col').text('Doors'),
+      $('<th>').attr('scope', 'col').text('Purchase'),
+    )
+    $('#table-info').append(newTableHeader);
     audioFig.empty();
-    var newRow = $('<tr>').addClass('tableRow');
-    newRow.append(
-      $('<td>').text(artist),
-      $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue),
-      $('<td>').text(newDate),
-      $('<td>').text(newTime),
-      $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
-    );
 
+    // Create row for event details and append this row for each result returned
+    for (i = 0; i < resultsLength; i++) {
+      var newRow = $('<tr>').addClass('tableRow');
+      newRow.append(
+      $('<td>').text(artist[i]),
+      $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch[i] + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue[i]),
+      $('<td>').text(newDate[i]),
+      $('<td>').text(newTime[i]),
+      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
+    );
     $('#table-info').append(newRow);
 
-
-
-
-    // creating audio player widget using firebase
-    // var audioFig = $('<figure>');
+    // Create row for audio sample for each result returned
     var caption = $('<figcaption>');
-
-    caption.text(resultArtist + ": " + resultTrackName);
-    console.log(caption);
-    audioFig.append(caption);
+    caption.text(resultArtist[i] + ": " + resultTrackName[i]);
+    audioFig = $('<figure>').append(caption);
     var samplePlayer = $('<audio controls></audio>');
-    samplePlayer.attr('src', sample);
+    samplePlayer.attr('src', sample[i]);
     audioFig.append(samplePlayer);
-    var newRowAudio = $('<tr>').append(audioFig);
+    var newRowAudio = $('<tr>').addClass("audioRow");
+    newRowAudio.append(audioFig);
     $("#table-info").append(newRowAudio);
 
+    }
   }
 }
 
