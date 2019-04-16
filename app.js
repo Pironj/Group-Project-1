@@ -190,7 +190,7 @@ $("#submitBtn").on("click", function (event) {
         term: term,
         media: 'track',
         entity: 'song',
-        limit: 1,
+        limit: 3,
         explicit: 'No'
       },
       method: 'GET',
@@ -200,7 +200,7 @@ $("#submitBtn").on("click", function (event) {
 
 
         $.each(data.results, function (i, result) {
-          if (i > 0) { return false; }
+          if (i > 2) { return false; }
           sample = result.previewUrl;
           resultArtist = result.artistName;
           resultTrackName = result.trackName;
