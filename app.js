@@ -116,25 +116,47 @@ $(document).ready(function () {
 
 
 var key = "jDG8c4z6my6XH8jVVebKu6i6eNqK1fY7";
-var resultArtist = "";
-var sample = "";
-var resultTrackName = "";
+// var resultArtist = "";
+// var sample = "";
+// var resultTrackName = "";
+var resultArtist = [];
+var sample = [];
+var resultTrackName = [];
 var size = 5;
-var artist = '';
-var time = '';
-var date = '';
-var venue = '';
-var buyTicket = '';
+// var artist = '';
+// var time = '';
+// var date = '';
+// var venue = '';
+// var buyTicket = '';
 var audioFig = $('<figure>');
 var artistSearch = '';
 var citySearch = '';
-var address = '';
-var zip = '';
-var mapSearch = '';
-var convertDate = '';
-var newDate = '';
-var convertTime = '';
-var newTime = '';
+// var address = '';
+// var zip = '';
+// var mapSearch = '';
+// var convertDate = '';
+// var newDate = '';
+// var convertTime = '';
+// var newTime = '';
+var masterResponse;
+
+var artist = [];
+var time = [];
+var date = [];
+var venue = [];
+var buyTicket = [];
+var audioFig = $('<figure>');
+var artistSearch = [];
+var citySearch = [];
+var address = [];
+var zip = [];
+var mapSearch = [];
+var convertDate = [];
+var newDate = [];
+var convertTime = [];
+var newTime = [];
+var resultsLength;
+// artistAudioSearch = response._embedded.events[i]._embedded.attractions[0].name
 
 // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
 
@@ -144,41 +166,43 @@ $("#submitBtn").on("click", function (event) {
 
   artistSearch = $("#srch-term1").val();
   citySearch = $("#srch-term2").val();
-  // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
   var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
-  // var queryURL1 = "https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
 
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function (response) {
-    console.log("first api call");
-    // console.log(response);
+    console.log(response);
+    // TODO: Get an audio sample for an artist for each event
+    // console.log(response._embedded.events[0]._embedded.attractions[0].name);
+    masterResponse = response;
+    resultsLength = response._embedded.events.length;
 
     try {
-      for (var i =0; i < response._embedded.events.length; i++) {
+      for (var i =0; i < resultsLength; i++) {
 
-        artist = response._embedded.events[i].name;
-        time = response._embedded.events[i].dates.start.localTime;
-        date = response._embedded.events[i].dates.start.localDate;
-        venue = response._embedded.events[i]._embedded.venues[0].name;
-        buyTicket = response._embedded.events[i].url;
-        address = response._embedded.events[i]._embedded.venues[0].address.line1;
-        zip = response._embedded.events[i]._embedded.venues[0].postalCode;
-        mapSearch = address + " " + zip;
-           // Converts API date results to a more user-readable format
-        convertDate = moment(date);
-        newDate = convertDate.format('ll');
+        artist[i] = response._embedded.events[i].name;
+        time[i] = response._embedded.events[i].dates.start.localTime;
+        date[i] = response._embedded.events[i].dates.start.localDate;
+        venue[i] = response._embedded.events[i]._embedded.venues[0].name;
+        buyTicket[i] = response._embedded.events[i].url;
+        address[i] = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zip[i] = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch[i] = address + " " + zip;
+
+        //Converts API date results to a more user-readable format
+        convertDate[i] = moment(date[i]);
+        newDate[i] = convertDate[i].format('ll');
   
-      // Converts API time results to a more user-readable format
-        convertTime = moment(time, 'HH:mm:ss');
-        newTime = convertTime.format('LT');
+        // Converts API time results to a more user-readable format
+        convertTime[i] = moment(time, 'HH:mm:ss');
+        newTime[i] = convertTime[i].format('LT');
       }
+
       iTunesCall(artistSearch);
 
     }
     catch {
-      console.log("No response");
       displayError();
     }
   });
@@ -186,7 +210,6 @@ $("#submitBtn").on("click", function (event) {
 
 
   function iTunesCall(term) {
-    console.log("about to send second api call");
 
     $.ajax({
       url: 'https://itunes.apple.com/search',
@@ -196,25 +219,19 @@ $("#submitBtn").on("click", function (event) {
         term: term,
         media: 'track',
         entity: 'song',
-        limit: 1,
+        limit: resultsLength,
         explicit: 'No'
       },
       method: 'GET',
       success: function (data) {
-        console.log("second ajax call");
-        console.log(data);
-
 
         $.each(data.results, function (i, result) {
-          if (i > 0) { return false; }
-          sample = result.previewUrl;
-          resultArtist = result.artistName;
-          resultTrackName = result.trackName;
-          console.log(result);
-          console.log(resultArtist);
-
+          if (i > 4) { return false; }
+          sample[i] = result.previewUrl;
+          resultArtist[i] = result.artistName;
+          resultTrackName[i] = result.trackName;
         });
-        console.log("before display");
+
         displayResults();
 
       },
@@ -229,7 +246,6 @@ $("#submitBtn").on("click", function (event) {
 
 function displayError() {
   if (artistSearch !== "") {
-    console.log("about to delete rows");
     $(".audioRow").empty();
     $(".tableRow").empty();
     var newRow = $('<tr>').addClass('tableRow');
@@ -241,46 +257,43 @@ function displayError() {
 
 function displayResults() {
   if (artistSearch !== "") {
-
     $(".tableRow").empty();
-    console.log("Neha test 1");
     $("#table-info").empty();
-    console.log("Neha test 2");
     var newTableHeader = $('<tr>');
     newTableHeader.append(
       $('<th>').attr('scope', 'col').text('Event'),
       $('<th>').attr('scope', 'col').text('Venue'),
       $('<th>').attr('scope', 'col').text('Date'),
       $('<th>').attr('scope', 'col').text('Doors'),
-      $('<th>').attr('scope', 'col').text('Purhcase'),
+      $('<th>').attr('scope', 'col').text('Purchase'),
     )
     $('#table-info').append(newTableHeader);
     audioFig.empty();
-    var newRow = $('<tr>').addClass('tableRow');
-    newRow.append(
-      $('<td>').text(artist),
-      $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue),
-      $('<td>').text(newDate),
-      $('<td>').text(newTime),
-      $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
-    );
 
+    // Create row for event details and append this row for each result returned
+    for (i = 0; i < resultsLength; i++) {
+      var newRow = $('<tr>').addClass('tableRow');
+      newRow.append(
+      $('<td>').text(artist[i]),
+      $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch[i] + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue[i]),
+      $('<td>').text(newDate[i]),
+      $('<td>').text(newTime[i]),
+      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
+    );
     $('#table-info').append(newRow);
 
-    // creating audio player widget using firebase
-    // var audioFig = $('<figure>');
+    // Create row for audio sample for each result returned
     var caption = $('<figcaption>');
-
-    caption.text(resultArtist + ": " + resultTrackName);
-    console.log(caption);
-    audioFig.append(caption);
+    caption.text(resultArtist[i] + ": " + resultTrackName[i]);
+    audioFig = $('<figure>').append(caption);
     var samplePlayer = $('<audio controls></audio>');
-    samplePlayer.attr('src', sample);
+    samplePlayer.attr('src', sample[i]);
     audioFig.append(samplePlayer);
     var newRowAudio = $('<tr>').addClass("audioRow");
     newRowAudio.append(audioFig);
     $("#table-info").append(newRowAudio);
 
+    }
   }
 }
 
