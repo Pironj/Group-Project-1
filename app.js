@@ -33,9 +33,9 @@ $(document).ready(function () {
       con.onDisconnect().remove();
     }
   });
-  connectionsRef.on("value", function (snap) {
-    $(".card-footer").text("Site Visits: " + conCount + ' ' + "# Watching: " + snap.numChildren());
-  });
+  // connectionsRef.on("value", function (snap) {
+  //   $(".card-footer").text("Site Visits: " + conCount + ' ' + "# Watching: " + snap.numChildren());
+  // });
 
 });
 
