@@ -226,7 +226,7 @@ $("#submitBtn").on("click", function (event) {
       success: function (data) {
 
         $.each(data.results, function (i, result) {
-          if (i > 4) { return false; }
+          if (i > resultsLength) { return false; }
           sample[i] = result.previewUrl;
           resultArtist[i] = result.artistName;
           resultTrackName[i] = result.trackName;

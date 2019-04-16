@@ -12,9 +12,20 @@ h4, p{
     text-align: center;
 }
 
-#signInBtn, #registerBtn{
+#signInBtn{
     margin-top: 30px;
+    float: left;
 
+}
+
+#submitBtn{
+    margin-left:0px !important; 
+    align-self: center;
+    position: absolute;
+}
+#registerBtn{
+    margin-top: 30px;
+    float: end;
 }
 .col-lg-4{
     text-align: center;
@@ -132,7 +143,7 @@ h3
 
 .form-control { width:40% !important; }
 #srch-term1 { margin-right:5px }
-.btn { margin-left:0px !important; 
+/* .btn { margin-left:0px !important; 
 align-self: center;
 position: absolute;
-}
+} */
