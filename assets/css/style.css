@@ -141,7 +141,7 @@ h3
     align-self: center;
 }
 
-.form-control { width:40% !important; }
+/* .form-control { width:40% !important; } */
 #srch-term1 { margin-right:5px }
 /* .btn { margin-left:0px !important; 
 align-self: center;

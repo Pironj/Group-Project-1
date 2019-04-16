@@ -164,7 +164,7 @@ $("#submitBtn").on("click", function (event) {
       buyTicket = response._embedded.events[i].url;
       address = response._embedded.events[i]._embedded.venues[0].address.line1;
       zip = response._embedded.events[i]._embedded.venues[0].postalCode;
-      mapSearch = address + " " + zip;
+      mapSearch = venue + " " + address + " " + zip;
          // Converts API date results to a more user-readable format
       convertDate = moment(date);
       newDate = convertDate.format('ll');

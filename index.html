@@ -251,9 +251,15 @@
 
 
 
-  <!-- Optional JavaScript -->
-  <!-- Firebase, then jQuery, then Ajax, then Bootstrap JS, then local JS -->
-  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script defer src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+
+  <script defer src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+
+  <script defer src="./init-firebase.js"></script>
+
+  <!-- jQuery, then Ajax, then Bootstrap JS, then local JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
