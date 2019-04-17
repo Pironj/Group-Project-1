@@ -233,7 +233,7 @@ function displayResults() {
       $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue),
       $('<td>').text(newDate),
       $('<td>').text(newTime),
-      $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
+      $('<td>').html('<a href="' + buyTicket + '" class="btn btn-danger btn-sm " tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
     );
 
     $('#table-info').append(newRow);
