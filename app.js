@@ -261,12 +261,15 @@ var artist = [];
 var time = [];
 var date = [];
 var venue = [];
+var venueSearch = '';
 var buyTicket = [];
 var audioFig = $('<figure>');
 var artistSearch = [];
 var citySearch = [];
 var address = [];
 var zip = [];
+var addressSearch = '';
+var zipSearch = '';
 var mapSearch = [];
 var convertDate = [];
 var newDate = [];
@@ -301,10 +304,13 @@ $("#submitBtn").on("click", function (event) {
         time[i] = response._embedded.events[i].dates.start.localTime;
         date[i] = response._embedded.events[i].dates.start.localDate;
         venue[i] = response._embedded.events[i]._embedded.venues[0].name;
+        venueSearch = response._embedded.events[i]._embedded.venues[0].name;
         buyTicket[i] = response._embedded.events[i].url;
         address[i] = response._embedded.events[i]._embedded.venues[0].address.line1;
         zip[i] = response._embedded.events[i]._embedded.venues[0].postalCode;
-        mapSearch[i] = address + " " + zip;
+        addressSearch = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zipSearch = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch[i] = venueSearch + " " + addressSearch + " " + zipSearch;
 
         //Converts API date results to a more user-readable format
         convertDate[i] = moment(date[i]);
@@ -393,21 +399,21 @@ function displayResults() {
       $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch[i] + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue[i]),
       $('<td>').text(newDate[i]),
       $('<td>').text(newTime[i]),
-      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
-      );
-      $('#table-info').append(newRow);
+      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-sm" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
+    );
+    $('#table-info').append(newRow);
 
-      // Create row for audio sample for each result returned
-      var caption = $('<figcaption>');
-      caption.text(resultArtist[i] + ": " + resultTrackName[i]);
-      audioFig = $('<figure>').append(caption);
-      var samplePlayer = $('<audio controls></audio>');
-      samplePlayer.attr('src', sample[i]);
-      audioFig.append(samplePlayer);
-      var newRowAudio = $('<tr>').addClass("audioRow");
-      newRowAudio.append(audioFig);
-      $("#table-info").append(newRowAudio);
- 
+    // Create row for audio sample for each result returned
+    var caption = $('<figcaption>');
+    caption.text(resultArtist[i] + ": " + resultTrackName[i]);
+    audioFig = $('<figure>').append(caption);
+    var samplePlayer = $('<audio controls></audio>');
+    samplePlayer.attr('src', sample[i]);
+    audioFig.append(samplePlayer);
+    var newRowAudio = $('<tr>').addClass("audioRow");
+    newRowAudio.append(audioFig);
+    $("#table-info").append(newRowAudio);
+
     }
   }
 }
