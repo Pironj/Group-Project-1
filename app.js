@@ -144,12 +144,15 @@ var artist = [];
 var time = [];
 var date = [];
 var venue = [];
+var venueSearch = '';
 var buyTicket = [];
 var audioFig = $('<figure>');
 var artistSearch = [];
 var citySearch = [];
 var address = [];
 var zip = [];
+var addressSearch = '';
+var zipSearch = '';
 var mapSearch = [];
 var convertDate = [];
 var newDate = [];
@@ -172,24 +175,6 @@ $("#submitBtn").on("click", function (event) {
     url: queryURL,
     method: "GET"
   }).then(function (response) {
-<<<<<<< HEAD
-    // console.log(response);
-
-
-    for (var i = 0; i < response._embedded.events.length; i++) {
-
-      artist = response._embedded.events[i].name;
-      time = response._embedded.events[i].dates.start.localTime;
-      date = response._embedded.events[i].dates.start.localDate;
-      venue = response._embedded.events[i]._embedded.venues[0].name;
-      buyTicket = response._embedded.events[i].url;
-      address = response._embedded.events[i]._embedded.venues[0].address.line1;
-      zip = response._embedded.events[i]._embedded.venues[0].postalCode;
-      mapSearch = venue + " " + address + " " + zip;
-         // Converts API date results to a more user-readable format
-      convertDate = moment(date);
-      newDate = convertDate.format('ll');
-=======
     console.log(response);
     // TODO: Get an audio sample for an artist for each event
     // console.log(response._embedded.events[0]._embedded.attractions[0].name);
@@ -203,10 +188,13 @@ $("#submitBtn").on("click", function (event) {
         time[i] = response._embedded.events[i].dates.start.localTime;
         date[i] = response._embedded.events[i].dates.start.localDate;
         venue[i] = response._embedded.events[i]._embedded.venues[0].name;
+        venueSearch = response._embedded.events[i]._embedded.venues[0].name;
         buyTicket[i] = response._embedded.events[i].url;
         address[i] = response._embedded.events[i]._embedded.venues[0].address.line1;
         zip[i] = response._embedded.events[i]._embedded.venues[0].postalCode;
-        mapSearch[i] = address + " " + zip;
+        addressSearch = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zipSearch = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch[i] = venueSearch + " " + addressSearch + " " + zipSearch;
 
         //Converts API date results to a more user-readable format
         convertDate[i] = moment(date[i]);
@@ -216,7 +204,6 @@ $("#submitBtn").on("click", function (event) {
         convertTime[i] = moment(time, 'HH:mm:ss');
         newTime[i] = convertTime[i].format('LT');
       }
->>>>>>> 7873f739f2fee2c38b141a6a2b314a5e71cbbcc4
 
       iTunesCall(artistSearch);
 
@@ -297,7 +284,7 @@ function displayResults() {
       $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch[i] + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue[i]),
       $('<td>').text(newDate[i]),
       $('<td>').text(newTime[i]),
-      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
+      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-sm" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
     );
     $('#table-info').append(newRow);
 
