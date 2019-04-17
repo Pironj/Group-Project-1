@@ -6,6 +6,7 @@ head
 body {
     background: #413F49;
     font-family: helvetica neue,helvetica,arial,sans-serif;
+    font-size: .9rem;
 }
 .page-footer{
 color: #FFF;
@@ -86,7 +87,12 @@ h3
 
 } 
 
-
+.table{
+    width:100%;
+}
+#table-info{
+    table-layout: fixed;
+}
 .img-container {
     height: 100vh;
     overflow: hidden;
@@ -154,9 +160,10 @@ float:right;
 .footer-copyright{
     top:10%;
 }
-.form-control { width:40% !important; }
+/* .form-control { width:40% !important; }
 #srch-term1 { margin-right:5px }
-/* .btn { margin-left:0px !important; 
+.btn { margin-left:0px !important; 
 align-self: center;
 position: absolute;
 } */
+

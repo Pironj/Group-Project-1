@@ -284,7 +284,7 @@ function displayResults() {
       $('<td>').html('<a href="https://www.google.com/maps/place/' + mapSearch[i] + '" target="_blank"><i class="fas fa-map-marker-alt"></i></a>' + " " + venue[i]),
       $('<td>').text(newDate[i]),
       $('<td>').text(newTime[i]),
-      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-lg" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
+      $('<td>').html('<a href="' + buyTicket[i] + '" class="btn btn-danger btn-sm" tabindex="-1" target="_blank" role="button" aria-disabled="true">Tickets</a>'),
     );
     $('#table-info').append(newRow);
 
