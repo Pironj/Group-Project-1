@@ -14,10 +14,13 @@ h4, p{
     text-align: center;
 }
 
-#signInBtn{
+#signInBtn, #signOut{
     margin-top: 30px;
     float: left;
 
+}
+#signOut {
+    margin-left: 10px;
 }
 
 #submitBtn{
@@ -147,10 +150,6 @@ h3
 #search{
     align-self: center;
 }
-<<<<<<< HEAD
-
-/* .form-control { width:40% !important; } */
-=======
 #footerData{
 position:absolute;
 float:right;
@@ -158,10 +157,54 @@ float:right;
 .footer-copyright{
     top:10%;
 }
-.form-control { width:40% !important; }
->>>>>>> 7873f739f2fee2c38b141a6a2b314a5e71cbbcc4
+/* .form-control { width:40% !important; } */
 #srch-term1 { margin-right:5px }
 /* .btn { margin-left:0px !important; 
 align-self: center;
 position: absolute;
 } */
+
+/* The message box is shown when the user clicks on the password field */
+#message {
+display:none;
+background: #f1f1f1;
+color: #000;
+position: relative;
+padding: 20px;
+margin-top: 10px;
+}
+
+#message {
+padding: 10px 35px;
+font-size: 10px;
+}
+h4 {
+font-size: 12px;
+}
+#letter, #capital, #number, #length {
+   margin-left: 20px;
+   font-size: 10px;
+   text-align: left
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+color: green;
+}
+
+.valid:before {
+position: relative;
+left: -35px;
+content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+color: red;
+}
+
+.invalid:before {
+position: relative;
+left: -35px;
+content: "✖";
+}
