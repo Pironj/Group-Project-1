@@ -144,12 +144,15 @@ var artist = [];
 var time = [];
 var date = [];
 var venue = [];
+var venueSearch = '';
 var buyTicket = [];
 var audioFig = $('<figure>');
 var artistSearch = [];
 var citySearch = [];
 var address = [];
 var zip = [];
+var addressSearch = '';
+var zipSearch = '';
 var mapSearch = [];
 var convertDate = [];
 var newDate = [];
@@ -185,10 +188,13 @@ $("#submitBtn").on("click", function (event) {
         time[i] = response._embedded.events[i].dates.start.localTime;
         date[i] = response._embedded.events[i].dates.start.localDate;
         venue[i] = response._embedded.events[i]._embedded.venues[0].name;
+        venueSearch = response._embedded.events[i]._embedded.venues[0].name;
         buyTicket[i] = response._embedded.events[i].url;
         address[i] = response._embedded.events[i]._embedded.venues[0].address.line1;
         zip[i] = response._embedded.events[i]._embedded.venues[0].postalCode;
-        mapSearch[i] = address + " " + zip;
+        addressSearch = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zipSearch = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch[i] = venueSearch + " " + addressSearch + " " + zipSearch;
 
         //Converts API date results to a more user-readable format
         convertDate[i] = moment(date[i]);
