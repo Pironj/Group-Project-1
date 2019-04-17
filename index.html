@@ -73,15 +73,23 @@
       <div class="col-lg-4">
         <div class="sign-in-btn">
           <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="signInBtn">Sign In</button>
+          <button class="btn btn-danger d-none" type="submit" id="signOut">Sign Out</button>
           <div class="dropdown-menu" aria-labelledby="signInBtn">
               <form class="px-4 py-3">
                 <div class="form-group">
                   <label for="exampleDropdownFormEmail1">Email address</label>
-                  <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+                  <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleDropdownFormPassword1">Password</label>
-                  <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+                  <input type="password" class="form-control" id="exampleDropdownFormPassword1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}" placeholder="Password" required>
+                </div>
+                <div id="message">
+                  <h4>Password must contain the following:</h4>
+                  <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                  <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                  <p id="number" class="invalid">A <b>number</b></p>
+                  <p id="length" class="invalid">Minimum <b>8 characters</b></p>
                 </div>
                 <div class="form-group">
                   <div class="form-check">
@@ -91,11 +99,11 @@
                     </label>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" class="btn btn-primary" id="signIn">Sign In</button>
+                <button type="submit" class="btn btn-primary" id="signUp">Sign Up</button>
               </form>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">New around here? Sign up</a>
-              <a class="dropdown-item" href="#">Forgot password?</a>
+              <a class="dropdown-item" id="forgotPW" href="#">Forgot password?</a>
             </div>
         </div>
       </div>
@@ -287,12 +295,16 @@
   </div>
   </div>
 
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
 
 
-
-  <!-- Optional JavaScript -->
-  <!-- Firebase, then jQuery, then Ajax, then Bootstrap JS, then local JS -->
-  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+  <!-- jQuery, then Ajax, then Bootstrap JS, then local JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
@@ -304,8 +316,6 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-  <script src=“https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js“></script>
-  <script src="assets/javascript/javascript.js"></script>
   <script src="app.js"></script>
 </body>
 

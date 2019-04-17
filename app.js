@@ -1,8 +1,9 @@
 
-$(document).ready(function () {
 
   // Variable to store # of site visits in total
   var conCount = 0;
+
+
 
 
   // Initialize Firebase
@@ -15,49 +16,165 @@ $(document).ready(function () {
     messagingSenderId: "385498394865"
   };
   firebase.initializeApp(config);
+  
+  // Firebase Authentication variables
+  var txtEmail = document.getElementById('exampleDropdownFormEmail1');
+  var txtPassword = document.getElementById('exampleDropdownFormPassword1');
+  var signIn = document.getElementById('signIn');
+  var register = document.getElementById('signUp');
+  var forgotPW = document.getElementById('forgotPW')
+  var logOut = document.getElementById('signOut');
+  
+  //password field validation
+  var myInput = document.getElementById("exampleDropdownFormPassword1");
+  var myInputE = document.getElementById("exampleDropdownFormEmail1");
+  var letter = document.getElementById("letter");
+  var capital = document.getElementById("capital");
+  var number = document.getElementById("number");
+  var length = document.getElementById("length");
+  var wrongPsw = $('<p id="passX">');
+  var notAnEmail = $('<p id="emailX">');
+  var runApp = false;
+  // When the user clicks on the password field, show the message box
+  myInput.onfocus = function() {
+    document.getElementById("message").style.display = "block";
+  }
+  
+  // When the user clicks outside of the password field, hide the message box
+  myInput.onblur = function() {
+    document.getElementById("message").style.display = "none";
+  }
+  
+  // When the user starts to type something inside the password field
+  myInput.onkeyup = function() {
+    // Validate lowercase letters
+    var lowerCaseLetters = /[a-z]/g;
+    if(myInput.value.match(lowerCaseLetters)) {  
+      letter.classList.remove("invalid");
+      letter.classList.add("valid");
+    } else {
+      letter.classList.remove("valid");
+      letter.classList.add("invalid");
+    }
+    
+    // Validate capital letters
+    var upperCaseLetters = /[A-Z]/g;
+    if(myInput.value.match(upperCaseLetters)) {  
+      capital.classList.remove("invalid");
+      capital.classList.add("valid");
+    } else {
+      capital.classList.remove("valid");
+      capital.classList.add("invalid");
+    }
+    
+    // Validate numbers
+    var numbers = /[0-9]/g;
+    if(myInput.value.match(numbers)) {  
+      number.classList.remove("invalid");
+      number.classList.add("valid");
+    } else {
+      number.classList.remove("valid");
+      number.classList.add("invalid");
+    }
+    
+    // Validate length
+    if(myInput.value.length >= 8) {
+      length.classList.remove("invalid");
+      length.classList.add("valid");
+    } else {
+      length.classList.remove("valid");
+      length.classList.add("invalid");
+    }
+  }
+  
+  firebase.auth().onAuthStateChanged(function(user) {
+    window.user = user;
 
-  var database = firebase.database();
+  });
 
-  // All of our connections will be stored in this directory.
-  var connectionsRef = database.ref("/connections");
-  var connectedRef = database.ref(".info/connected"); //.info/connected is a special firebase selector taht tells the client if a user is connected.
+  document.querySelector('#signUp').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var email = document.querySelector('#exampleDropdownFormEmail1').value;
+    var password = document.querySelector('#exampleDropdownFormPassword1').value
+    // var credential = firebase.auth.EmailAuthProvider.credential(email, password);
+    var auth = firebase.auth();
+    
+    auth.createUserWithEmailAndPassword(email, password)
+    .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var pswCheck = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+      var emailCheck = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (password !== pswCheck) {
+        wrongPsw.text('Invalid Password Input');
+        $('#pswForm').prepend(wrongPsw);
+        console.log('not a valid password');
+      }
+      if (email !== emailCheck) {
+        notAnEmail.text('Please enter a valid email address');
+        $("#emailForm").prepend(notAnEmail);
+      }
+    
+      console.log(error)
+    });
+    runApp = true;
+  });
+  
 
-  // When the client's connection state changes...
-  connectedRef.on("value", function (snap) { // .on event listener for whenever a value changes "value" we run this function. (snap) or (snapshot) can name whatever you want is literally just the data
-
-    // If they are connected..
-    if (snap.val()) { // snap is an object and has methods on it .val().  if true; snap.val() similar to ajax response.
-      var con = connectionsRef.push(true);
-      // increment site visit per connection
-      conCount++;
-      con.onDisconnect().remove();
+  // add realtime listener
+  firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+      logOut.classList.remove('d-none');
+      console.log(firebaseUser);
+    } else {
+      logOut.classList.add('d-none');
+      console.log('user not logged in');
     }
   });
-  // connectionsRef.on("value", function (snap) {
-  //   $(".card-footer").text("Site Visits: " + conCount + ' ' + "# Watching: " + snap.numChildren());
-  // });
-
-});
 
 
-console.clear();
+
+  document.querySelector('#signIn').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var email = document.querySelector('#exampleDropdownFormEmail1').value;
+    var password = document.querySelector('#exampleDropdownFormPassword1').value
+    var credential = firebase.auth.EmailAuthProvider.credential(email, password);
+    var auth = firebase.auth();
+    var currentUser = auth.currentUser;
+    auth.signInAndRetrieveDataWithCredential(credential);
+
+
+    
+  });
+
+  document.querySelector('#signOut').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    firebase.auth().signOut();
+    logOut.classList.add('d-none');
+  });
+  
+
 
 
 //bg img JQuery
 class Slideshow {
-
+  
   constructor() {
     this.initSlides();
     this.initSlideshow();
   }
-
+  
   // Set a `data-slide` index on each slide for easier slide control.
   initSlides() {
     this.container = $('[data-slideshow]');
     this.slides = this.container.find('img');
     this.slides.each((idx, slide) => $(slide).attr('data-slide', idx));
   }
-
+  
   // Pseudo-preload images so the slideshow doesn't start before all the images
   // are available.
   initSlideshow() {
@@ -75,31 +192,31 @@ class Slideshow {
     this.imagesLoaded++;
     if (this.imagesLoaded >= this.slides.length) { this.playSlideshow() }
   }
-
+  
   // Start the slideshow.
   playSlideshow() {
     this.slideshow = window.setInterval(() => { this.performSlide() }, 3500);
   }
-
+  
   // 1. Previous slide is unset.
   // 2. What was the next slide becomes the previous slide.
   // 3. New index and appropriate next slide are set.
   // 4. Fade out action.
   performSlide() {
     if (this.prevSlide) { this.prevSlide.removeClass('prev fade-out') }
-
+    
     this.nextSlide.removeClass('next');
     this.prevSlide = this.nextSlide;
     this.prevSlide.addClass('prev');
-
+    
     this.currentIndex++;
     if (this.currentIndex >= this.slides.length) { this.currentIndex = 0 }
-
+    
     this.setNextSlide();
-
+    
     this.prevSlide.addClass('fade-out');
   }
-
+  
   setNextSlide() {
     this.nextSlide = this.container.find(`[data-slide="${this.currentIndex}"]`).first();
     this.nextSlide.addClass('next');
@@ -162,11 +279,10 @@ var resultsLength;
 // artistAudioSearch = response._embedded.events[i]._embedded.attractions[0].name
 
 // var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artist + "&city=" + city + "&postalCode=" + zip + "&size=" + size + "&apikey=" + key;
-
+// login event
 
 $("#submitBtn").on("click", function (event) {
   event.preventDefault()
-
   artistSearch = $("#srch-term1").val();
   citySearch = $("#srch-term2").val();
   var queryURL = "https://app.ticketmaster.com/discovery/v2/events?keyword=" + artistSearch + "&city=" + citySearch + "&size=" + size + "&apikey=" + key;
@@ -213,10 +329,11 @@ $("#submitBtn").on("click", function (event) {
     }
   });
 
+});
 
 
   function iTunesCall(term) {
-
+  
     $.ajax({
       url: 'https://itunes.apple.com/search',
       crossDomain: true,
@@ -230,25 +347,23 @@ $("#submitBtn").on("click", function (event) {
       },
       method: 'GET',
       success: function (data) {
-
+  
         $.each(data.results, function (i, result) {
           if (i > resultsLength) { return false; }
           sample[i] = result.previewUrl;
           resultArtist[i] = result.artistName;
           resultTrackName[i] = result.trackName;
         });
-
+  
         displayResults();
-
+  
       },
       error: function (e) {
         console.log(e);
       }
     });
-
+  
   }
-
-})
 
 function displayError() {
   if (artistSearch !== "") {
@@ -302,5 +417,3 @@ function displayResults() {
     }
   }
 }
-
-
