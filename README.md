@@ -22,6 +22,14 @@
   - TicketMaster API
   - Itunes API
 
+  ## Future Updates
+  
+  - storing user search data to their firebase profile
+  - updating firebase user authentication from email password to google authenticate for simplicity ease of use
+  - adapt google api for model display of directions
+  - adding more event types other than music
+  - create a date calendar widget to search specified dates
+
 	## Contributors
 
  - (#MarcusSilvus)(#trbradley48)(#benitezmarcos)
