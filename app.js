@@ -298,7 +298,7 @@ $("#submitBtn").on("click", function (event) {
     resultsLength = response._embedded.events.length;
 
     try {
-      for (var i =0; i < resultsLength; i++) {
+      for (var i = 0; i < resultsLength; i++) {
 
         artist[i] = response._embedded.events[i].name;
         time[i] = response._embedded.events[i].dates.start.localTime;
