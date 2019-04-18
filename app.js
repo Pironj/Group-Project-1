@@ -296,6 +296,9 @@ $("#submitBtn").on("click", function (event) {
         zip[i] = response._embedded.events[i]._embedded.venues[0].postalCode;
         mapSearch[i] = address + " " + zip;
         artistAudioSearch[i] = response._embedded.events[i]._embedded.attractions[0].name;
+        addressSearch = response._embedded.events[i]._embedded.venues[0].address.line1;
+        zipSearch = response._embedded.events[i]._embedded.venues[0].postalCode;
+        mapSearch[i] = venueSearch + " " + addressSearch + " " + zipSearch;
 
 
         //Converts API date results to a more user-readable format
