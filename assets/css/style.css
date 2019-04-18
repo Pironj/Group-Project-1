@@ -3,18 +3,35 @@ head
     font-family: 'Raleway', sans-serif;
 }
 
-body{
+body {
     background: #413F49;
     font-family: helvetica neue,helvetica,arial,sans-serif;
+    font-size: .9rem;
 }
-
+.page-footer{
+color: #FFF;
+}
 h4, p{
     text-align: center;
 }
 
-#signInBtn, #registerBtn{
+#signInBtn, #signOut{
     margin-top: 30px;
+    float: left;
 
+}
+#signOut {
+    margin-left: 10px;
+}
+
+#submitBtn{
+    margin-left:0px !important; 
+    align-self: center;
+    position: absolute;
+}
+#registerBtn{
+    margin-top: 30px;
+    float: end;
 }
 .col-lg-4{
     text-align: center;
@@ -31,7 +48,7 @@ h4, p{
     font-size: 3.45rem;
     
 }
-.fa-music{
+.fa-music, .fa-twitter-square, .fa-instagram, .fa-facebook-square{
     letter-spacing: 2px;
     padding: 25px;
     border-radius: 20px;
@@ -73,7 +90,12 @@ h3
 
 } 
 
-
+.table{
+    width:100%;
+}
+#table-info{
+    table-layout: fixed;
+}
 .img-container {
     height: 100vh;
     overflow: hidden;
@@ -120,19 +142,75 @@ h3
     color: #FFF;
    font-size: 72px;
     position: absolute;
-    top: 60%;
+    top: 65%;
     left: 46%;
     transform: translate(-50%, -50%);
     align-content: center;
 }
-
+#footer-left{
+    text-align: center;
+}
+#footer-right{
+    text-align: center;
+}
 #search{
     align-self: center;
 }
-
-.form-control { width:40% !important; }
+#footerData{
+position:absolute;
+float:right;
+}
+.footer-copyright{
+    top:10%;
+}
+/* .form-control { width:40% !important; }
 #srch-term1 { margin-right:5px }
 .btn { margin-left:0px !important; 
 align-self: center;
 position: absolute;
+} */
+
+/* The message box is shown when the user clicks on the password field */
+#message {
+display:none;
+background: #f1f1f1;
+color: #000;
+position: relative;
+padding: 20px;
+margin-top: 10px;
+}
+
+#message {
+padding: 10px 35px;
+font-size: 10px;
+}
+h4 {
+font-size: 12px;
+}
+#letter, #capital, #number, #length {
+   margin-left: 20px;
+   font-size: 10px;
+   text-align: left
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+color: green;
+}
+
+.valid:before {
+position: relative;
+left: -35px;
+content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+color: red;
+}
+
+.invalid:before {
+position: relative;
+left: -35px;
+content: "✖";
 }
