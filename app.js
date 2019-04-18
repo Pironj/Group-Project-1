@@ -281,11 +281,11 @@ $("#submitBtn").on("click", function (event) {
     method: "GET"
   }).then(function (response) {
     masterResponse = response;
-    resultsLength = response._embedded.events.length;
 
     try {
+      resultsLength = response._embedded.events.length;
       for (var i = 0; i < resultsLength; i++) {
-
+        debugger;
         artist[i] = response._embedded.events[i].name;
         time[i] = response._embedded.events[i].dates.start.localTime;
         date[i] = response._embedded.events[i].dates.start.localDate;
